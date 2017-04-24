@@ -5,7 +5,7 @@ import org.newdawn.slick.state.*;
 
 import state.*;
 
-public class Game extends StateBasedGame {
+public class MainGame extends StateBasedGame {
 	// GAME PROPERTIES.
 	private static final String _TITLE = "BlueHills";
 	private boolean _paused;
@@ -13,7 +13,7 @@ public class Game extends StateBasedGame {
 	private int _width = Constants.get().screenWidth();
 	private int _height = Constants.get().screenHeight();
 	
-	public Game() {
+	public MainGame() {
 		super(_TITLE);
 		addStatesList();
 	}
