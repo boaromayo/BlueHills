@@ -6,51 +6,39 @@ import org.newdawn.slick.state.*;
 import state.*;
 
 public class MainGame extends StateBasedGame {
-	// GAME PROPERTIES.
-	private static final String _TITLE = "BlueHills";
-	private boolean _paused;
-	
-	private int _width = Constants.get().screenWidth();
-	private int _height = Constants.get().screenHeight();
-	
+	// Constructor.
 	public MainGame() {
-		super(_TITLE);
-		addStatesList();
+		super(Constants._TITLE);
+		addStates();
+		enter();
 	}
-
-	public void addStatesList() {
+	
+	public void addStates() {
 		addState(new MenuState());
 		addState(new MapState());
 	}
 	
-	@Override
-	public void initStatesList(GameContainer gc) throws SlickException {
-		initState(Constants.get().menuState(), gc, this);
-		initState(Constants.get().mapState(), gc, this);
-		enterMenu();
-	}
-	
-	public void initState(int stateId, GameContainer gc, StateBasedGame sbg) 
-			throws SlickException {
+	public void initState(int stateId, GameContainer gc, StateBasedGame sbg)
+		throws SlickException {
 		getState(stateId).init(gc, sbg);
 	}
 	
-	public void enterMenu() {
-		enterState(Constants.get().menuState()); // Enter menu.
+	@Override
+	public void initStatesList(GameContainer gc) throws SlickException {
+		initState(Constants._MENUSTATE, gc, this);
+		initState(Constants._MAPSTATE, gc, this);
 	}
 	
-	public void setPaused(boolean p) {
-		_paused = p;
-	}
-	
-	public boolean isPaused() {
-		return _paused;
+	private void enter() {
+		enterState(Constants._MENUSTATE);
 	}
 	
 	public void start() {
 		try {
 			AppGameContainer app = new AppGameContainer(this);
-			app.setDisplayMode(_width, _height, false);
+			app.setDisplayMode(Constants._WIDTH,
+					Constants._HEIGHT, 
+					false);
 			app.start();
 		} catch (SlickException e) {
 			System.err.println("ERROR: Unable to create window. Reason: " 
