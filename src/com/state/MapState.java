@@ -20,7 +20,7 @@ public class MapState extends State {
 	Player _player;
 	
 	public MapState() {
-		_player = new Player(_tilemap);
+		_player = new Player(/*_tilemap*/);
 	}
 	
 	@Override
@@ -54,11 +54,11 @@ public class MapState extends State {
 		// TODO Auto-generated method stub
 		_player.render(gc, sbg, g);
 		
-		/*if (Constants.get().isPaused()) {
-			_hudfont.drawString(Constants._WIDTH / 2 - 10, 
+		if (Constants.get().isPaused()) {
+			_msgfont.drawString(Constants._WIDTH / 2 - 10, 
 					Constants._HEIGHT / 2 - 10, 
-					"P A U S E");
-		}*/
+					"PAUSE");
+		}
 		
 		g.drawString("(" + _player.getX() + "," + _player.getY() + ")", 4, 30);
 		g.drawString("Direction: " + _player.getDirection(), 4, 50);
@@ -68,21 +68,28 @@ public class MapState extends State {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta)
 			throws SlickException {
 		// TODO Auto-generated method stub
-		_player.update(gc, sbg);
+		_player.update(gc, sbg, delta);
 		
 		// KEYBOARD INPUT.
 		if (keyDown(Input.KEY_UP) || 
 				keyDown(Input.KEY_W)) {
 			_player.setUp();
+			_player.setMoving(true);
 		} else if (keyDown(Input.KEY_LEFT) || 
 				keyDown(Input.KEY_A)) {
 			_player.setLeft();
+			_player.setMoving(true);
 		} else if (keyDown(Input.KEY_RIGHT) ||
 				keyDown(Input.KEY_D)) {
 			_player.setRight();
+			_player.setMoving(true);
 		} else if (keyDown(Input.KEY_DOWN) ||
-				keyDown(Input.KEY_S))
+				keyDown(Input.KEY_S)) {
 			_player.setDown();
+			_player.setMoving(true);
+		} else {
+			_player.setMoving(false);
+		}
 		
 		// MISC CONTROLS.
 		if (keyPressed(Input.KEY_P)) {
@@ -95,6 +102,8 @@ public class MapState extends State {
 			System.out.println("Exiting game...");
 			gc.exit();
 		}
+		
+		_player.move();
 	}
 
 	@Override

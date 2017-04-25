@@ -2,13 +2,13 @@ package state;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
+import org.newdawn.slick.geom.*;
 
 import main.*;
 
 public class MenuState extends State {
-	
-	// menu mode
-	private int _choice;
+	// CURSOR for menu
+	private Cursor _cursor;
 	
 	// choices
 	private final int _START = 0;
@@ -18,8 +18,8 @@ public class MenuState extends State {
 		"START GAME", "END GAME"
 	};
 	
-	public MenuState() {
-		_choice = 0;
+	public MenuState() {		
+		_cursor = new Cursor();
 	}
 	
 	@Override
@@ -52,9 +52,20 @@ public class MenuState extends State {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		// TODO Auto-generated method stub
-		g.drawString(_choices[_START], (Constants._WIDTH / 2) - 30, 240);
-		g.drawString(_choices[_QUIT], (Constants._WIDTH / 2) - 30, 270);
-		g.drawString("Cursor position: " + (_choice + 1), 4, 30);
+		if (_cursor.getPosition() == _START) {
+			_cursor.move((Constants._WIDTH / 2) - 50, 
+					(Constants._HEIGHT / 2) + 20);
+		} else if (_cursor.getPosition() == _QUIT) {
+			_cursor.move((Constants._WIDTH / 2) - 50, 
+				(Constants._HEIGHT / 2) + 60);
+		}
+		
+		_cursor.render(g);
+		
+		g.drawString(_choices[_START], (Constants._WIDTH / 2) - 30, 
+				(Constants._HEIGHT / 2) + 10);
+		g.drawString(_choices[_QUIT], (Constants._WIDTH / 2) - 30, 
+				(Constants._HEIGHT / 2) + 50);
 	}
 
 	@Override
@@ -63,16 +74,16 @@ public class MenuState extends State {
 		// TODO Auto-generated method stub
 		if (keyPressed(Input.KEY_W) ||
 				keyPressed(Input.KEY_UP)) {
-			if (_choice > 0)
-				_choice--;
+			if (_cursor.getPosition() > 0)
+				_cursor.decrement();
 			else
-				_choice = _choices.length - 1;
+				_cursor.setPosition(_choices.length - 1);
 		} else if (keyPressed(Input.KEY_S) ||
 				keyPressed(Input.KEY_DOWN)) {
-			if (_choice < _choices.length - 1) 
-				_choice++;
+			if (_cursor.getPosition() < _choices.length - 1) 
+				_cursor.increment();
 			else
-				_choice = 0;
+				_cursor.setPosition(0);
 		} else if (keyPressed(Input.KEY_ENTER)) {
 			branch(gc, sbg);
 		}
@@ -83,12 +94,60 @@ public class MenuState extends State {
 	}
 	
 	private void branch(GameContainer gc, StateBasedGame sbg) {
-		if (_choice == _START) {
+		if (_cursor.getPosition() == _START) {
 			sbg.enterState(Constants._MAPSTATE);
-		} else if (_choice == _QUIT) {
+		} else if (_cursor.getPosition() == _QUIT) {
 			System.out.println("Exiting game...");
 			gc.exit();
 		}
 	}
-
+	
+	private class Cursor {
+		private float _x;
+		private float _y;
+		private int _pos;
+		private Polygon _shape;
+		
+		public Cursor() {
+			_shape = new Polygon();
+			
+			_x = 0;
+			_y = 0;
+			
+			_shape.addPoint(_x, _y-10);
+			_shape.addPoint(_x+10, _y);
+			_shape.addPoint(_x, _y+10);
+			
+			_pos = 0;
+			
+			_shape.setLocation(_x, _y);
+		}
+		
+		public void render(Graphics g) {
+			g.fill(_shape);
+		}
+		
+		public void move(int x, int y) {
+			_x = x;
+			_y = y;
+			
+			_shape.setLocation(_x, _y);
+		}
+		
+		public void setPosition(int pos) {
+			_pos = pos;
+		}
+		
+		public void increment() {
+			_pos++;
+		}
+		
+		public void decrement() {
+			_pos--;
+		}
+		
+		public int getPosition() {
+			return _pos;
+		}
+	}
 }

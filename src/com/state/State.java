@@ -3,28 +3,29 @@ package state;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.*;
 
-import main.MainGame;
+import main.*;
 
 public abstract class State extends BasicGameState {
 	// INPUT.
 	protected Input _input;
-	
-	// MESSAGE FONT.
-	
-	// HUD FONT (will also be MENU FONT).
-	protected SpriteSheetFont _hudfont;
+		
+	// MESSAGE FONT (will also be INVENTORY MENU FONT).
+	protected SpriteSheetFont _msgfont;
 
 	public abstract boolean keyPressed(int key);
 	
 	public abstract boolean keyDown(int key);
 	
 	public State() {
-		//_hudfont = new SpriteSheetFont(Constants.get().);
 	}
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
+		// Initialize assets.
+		_msgfont = Constants.get().msgFont();
+		
+		// Initialize input.
 		_input = gc.getInput();
 	}
 
