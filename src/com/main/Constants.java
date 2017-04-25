@@ -23,10 +23,10 @@ public class Constants {
 	public static final int _TILESIZE = 32;
 	
 	//private SpriteSheetFont _HUDFONT;
-	//private SpriteSheetFont _MSGFONT;
+	private SpriteSheetFont _MSGFONT;
 	
 	//private SpriteSheet _hudFontSheet;
-	//private SpriteSheet _msgFontPath;
+	private SpriteSheet _msgFontSheet;
 	
 	private Constants() {}
 	
@@ -52,7 +52,7 @@ public class Constants {
 	/*public SpriteSheetFont hudFont() {
 		try {
 			 _hudFontSheet = new SpriteSheet(
-					 new Image("/assets/font/hud-font.bmp"), 
+					 new Image("/res/font/hud-font.bmp"), 
 					 32, 
 					 32);
 			_HUDFONT = new SpriteSheetFont(_hudFontSheet, '0');
@@ -67,12 +67,12 @@ public class Constants {
 		return null;
 	}*/
 	
-	/*public SpriteSheet msgFont() {
+	public SpriteSheetFont msgFont() {
 		try {
 			_msgFontSheet = new SpriteSheet(
-				new Image("/assets/font/msg-font.png"),
-				24,
-				24);
+				new Image("../res/font/msg-font.bmp"),
+				20,
+				20);
 			_MSGFONT = new SpriteSheetFont(_msgFontSheet, 'A');
 			
 			return _MSGFONT;
@@ -83,5 +83,5 @@ public class Constants {
 			System.exit(1);
 		}
 		return null;
-	}*/
+	}
 }
