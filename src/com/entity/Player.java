@@ -16,11 +16,11 @@ public class Player extends Entity {
 	private long _time;
 	
 	// Constructor.
-	public Player(Tilemap m) {
+	public Player(/*Tilemap m*/) {
 		//super(m);
 		setSize(Constants._PWIDTH, Constants._PHEIGHT);
 		
-		setSpeed(3);
+		setSpeed(0.2f);
 		setPosition(300,200);
 		setDirection(Direction._DOWN);
 	}
@@ -30,13 +30,13 @@ public class Player extends Entity {
 		_jewels = 0; // No money, no items.
 		_time = 0;
 		
-		/*_upSheet = new SpriteSheet("assets/img/playerup.png", 
+		/*_upSheet = new SpriteSheet("res/img/playerup.png", 
 		 	getWidth(), getHeight());
-		_leftSheet = new SpriteSheet("assets/img/playerleft.png", 
+		_leftSheet = new SpriteSheet("res/img/playerleft.png", 
 			getWidth(), getHeight());
-		_rightSheet = new SpriteSheet("assets/img/playerright.png", 
+		_rightSheet = new SpriteSheet("res/img/playerright.png", 
 			getWidth(), getHeight());
-		_downSheet = new SpriteSheet("assets/img/playerdown.png", 
+		_downSheet = new SpriteSheet("res/img/playerdown.png", 
 			getWidth(), getHeight());*/
 	}
 	
@@ -47,26 +47,23 @@ public class Player extends Entity {
 		g.fill(new Ellipse(getX(), getY(), getWidth() / 2, getHeight() / 2));
 	}
 	
-	public void update(GameContainer gc, StateBasedGame sbg) 
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) 
 			throws SlickException {
 		// Check movement.
+		if (isMoving()) {
 			if (isUp()) {
- 				setdy(-getSpeed());
+ 				setdy(-delta * getActualSpeed());
  			} else if (isDown()) {
-				setdy(getSpeed());
-			} else {
-				setdy(0);
-			}
-			
- 			if (isLeft()) {
-				setdx(-getSpeed());
+				setdy(delta * getActualSpeed());
+			} else if (isLeft()) {
+				setdx(-delta * getActualSpeed());
 			} else if (isRight()) {
-				setdx(getSpeed());
-			} else {
-				setdx(0);
+				setdx(delta * getActualSpeed());
 			}
-		
-		move();
+		} else {
+			setdx(0);
+			setdy(0);
+		}
 	}
 	
 }

@@ -11,19 +11,19 @@ public abstract class Entity {
 	private Tilemap _tilemap;
 	
 	// POSITION.
-	protected int _x;
-	protected int _y;
+	protected float _x;
+	protected float _y;
 	
 	// SIZE.
 	protected int _width;
 	protected int _height;
 	
 	// VECTOR POSITION.
-	protected int _dx;
-	protected int _dy;
+	protected float _dx;
+	protected float _dy;
 	
 	// SPEED.
-	protected int _v;
+	protected float _v;
 	
 	// ANIMATION IMGS.
 	protected Animation _animation;
@@ -42,12 +42,20 @@ public abstract class Entity {
 	// MOVEMENT.
 	protected boolean _moving;
 	
+	// COLLISION.
+	protected boolean _collision;
+	
+	protected int _upTile;
+	protected int _leftTile;
+	protected int _rightTile;
+	protected int _downTile;
+	
 	// HEALTH.
 	protected int _hp;
 	protected int _maxhp;
 	
 	// DEAD.
-	protected boolean _dead;
+	protected boolean _dead = false;
 	
 	public Entity(/*Tilemap m*/) {
 		//_tilemap = m;
@@ -56,7 +64,7 @@ public abstract class Entity {
 	public abstract void render(GameContainer gc, StateBasedGame sbg, Graphics g) 
 			throws SlickException;
 	
-	public abstract void update(GameContainer gc, StateBasedGame sbg) 
+	public abstract void update(GameContainer gc, StateBasedGame sbg, int delta) 
 			throws SlickException;
 	
 	protected void setAnimation(Animation frames, int duration) {
@@ -70,24 +78,32 @@ public abstract class Entity {
 		_y = y;
 	}
 	
-	public void setTilePosition(int tx, int ty) {
-		
-	}
-	
 	public void setSize(int w, int h) {
 		_width = w;
 		_height = h;
 	}
 	
-	public void setSpeed(int s) {
-		_v = s;
+	public void setSpeed(int spd) {
+		_v = spd;
+	}
+	
+	public void setSpeed(float spd) {
+		_v = spd;
 	}
 	
 	public void setdx(int x) {
 		_dx = x;
 	}
 	
+	public void setdx(float x) {
+		_dx = x;
+	}
+	
 	public void setdy(int y) {
+		_dy = y;
+	}
+	
+	public void setdy(float y) {
 		_dy = y;
 	}
 	
@@ -164,10 +180,18 @@ public abstract class Entity {
 	}
 	
 	public int getX() {
+		return (int)_x;
+	}
+	
+	public float getActualX() {
 		return _x;
 	}
 	
 	public int getY() {
+		return (int)_y;
+	}
+	
+	public float getActualY() {
 		return _y;
 	}
 	
@@ -180,6 +204,10 @@ public abstract class Entity {
 	}
 	
 	public int getSpeed() {
+		return (int)_v;
+	}
+	
+	public float getActualSpeed() {
 		return _v;
 	}
 	
